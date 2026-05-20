@@ -3,18 +3,21 @@ services:
     build:
       context: ./backend
     container_name: pj-backend
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     volumes:
-      - ./backend/datos_procesados:/app/datos_procesados
+      - datos_procesados:/app/datos_procesados
     restart: unless-stopped
 
   dashboard:
     build:
       context: ./dashboard
     container_name: pj-dashboard
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  datos_procesados:
