@@ -1,0 +1,6 @@
+__pycache__
+*.pyc
+datos_procesados
+.git
+.gitignore
+README.md

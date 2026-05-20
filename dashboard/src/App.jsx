@@ -16,7 +16,7 @@ const ESTADO_COLORS = {
   DV: "#dc2626", EV: "#14b8a6", RV: "#a855f7",
   PV: "#84cc16", PD: "#64748b",
 };
-const API = "http://localhost:5000/api";
+const API = "/api";
 
 // ── Utilidades ─────────────────────────────────────────────────────────────
 const fmt = (n) => new Intl.NumberFormat("es-CO").format(Math.round(n));
