@@ -17,6 +17,7 @@ const ESTADO_COLORS = {
   PV: "#84cc16", PD: "#64748b",
 };
 const API = "/api";
+//const API = "http://localhost:5000/api";
 
 // ── Utilidades ─────────────────────────────────────────────────────────────
 const fmt = (n) => new Intl.NumberFormat("es-CO").format(Math.round(n));
@@ -115,7 +116,7 @@ const KPISection = () => {
       color: "#16a34a",
     },
     {
-      label: "Facturas Tier ALTO",
+      label: "Facturas prioridad ALTA",
       value: fmt(data.tiers.ALTO.count),
       sub: `${data.tiers.ALTO.pct}% — atención prioritaria`,
       color: "#dc2626",
@@ -174,7 +175,7 @@ const KPISection = () => {
                     color:"#475569", textTransform:"uppercase", letterSpacing:"0.1em",
                     marginBottom:4, fontWeight: 500
                   }}>
-                    Tier {tier}
+                    Prioridad {tier}
                   </div>
                   <div style={{ fontSize:32, fontWeight:700, color, fontFamily:"'Space Grotesk', sans-serif" }}>
                     {fmt(t.count)}
@@ -271,8 +272,8 @@ const EstadosSection = () => {
 
       {/* Cross por tier */}
       <Card>
-        <SectionTitle subtitle="% de cada estado dentro de su tier (validación del modelo)">
-          Composición por Tier
+        <SectionTitle subtitle="% de cada estado dentro de su prioridad (validación del modelo)">
+          Composición por Prioridad
         </SectionTitle>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={tierData} margin={{ right:16 }}>
@@ -291,7 +292,7 @@ const EstadosSection = () => {
           </BarChart>
         </ResponsiveContainer>
         <InsightBadge color="#6366f1">
-          Tier BAJO: 75.9% AP · Tier MEDIO: 86.5% RD + glosas (DV/RV) · Tier ALTO: 72.4% GN sin enviar. Separación casi perfecta sin supervisión.
+          Prioridad BAJA: 75.9% AP · Prioridad MEDIA: 86.5% RD + glosas (DV/RV) · Prioridad ALTA: 72.4% GN sin enviar. Separación casi perfecta sin supervisión.
         </InsightBadge>
       </Card>
     </div>
@@ -375,7 +376,7 @@ const CorrelacionesSection = () => {
 
   return (
     <Card>
-      <SectionTitle subtitle="Correlación de Spearman con dias_transcurridos (proxy del tier)">
+      <SectionTitle subtitle="Correlación de Spearman con dias_transcurridos (proxy de prioridad)">
         Importancia de Variables
       </SectionTitle>
       <ResponsiveContainer width="100%" height={300}>
@@ -438,7 +439,7 @@ const CentroidesSection = () => {
     <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(320px, 1fr))", gap:16 }}>
       {/* Tabla de centroides */}
       <Card style={{ overflowX: "auto" }}>
-        <SectionTitle subtitle="Valores desescalados — perfil operativo de cada tier">
+        <SectionTitle subtitle="Valores desescalados — perfil operativo de cada prioridad">
           Perfil de Centroides
         </SectionTitle>
         <table style={{ width:"100%", borderCollapse:"collapse", fontFamily:"'DM Mono', monospace", fontSize:12, minWidth: 300 }}>
@@ -475,7 +476,7 @@ const CentroidesSection = () => {
 
       {/* Radar */}
       <Card>
-        <SectionTitle subtitle="Comparación multidimensional de tiers">
+        <SectionTitle subtitle="Comparación multidimensional de prioridades">
           Radar de Perfiles
         </SectionTitle>
         <ResponsiveContainer width="100%" height={280}>
@@ -484,7 +485,7 @@ const CentroidesSection = () => {
             <PolarAngleAxis dataKey="feature" tick={{ fill:"#475569", fontSize:11, fontFamily:"'DM Mono', monospace" }} />
             <PolarRadiusAxis tick={{ fill:"#64748b", fontSize:9 }} />
             {["BAJO","MEDIO","ALTO"].map((t) => (
-              <Radar key={t} name={`Tier ${t}`} dataKey={t}
+              <Radar key={t} name={`Prioridad ${t}`} dataKey={t}
                 stroke={TIER_COLORS[t]} fill={TIER_COLORS[t]} fillOpacity={0.06} strokeWidth={2} />
             ))}
             <Legend wrapperStyle={{ fontSize:11, fontFamily:"'DM Mono', monospace", paddingTop: 5 }} />
@@ -562,8 +563,8 @@ const PredictorSection = () => {
 
   return (
     <Card>
-      <SectionTitle subtitle="Clasifica una nueva factura en un Tier de atención">
-        Predictor de Tier
+      <SectionTitle subtitle="Clasifica una nueva factura en una prioridad de atención">
+        Predictor de Prioridad
       </SectionTitle>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px, 1fr))", gap:12, marginBottom:20 }}>
         {fields.map((f) => (
@@ -602,7 +603,7 @@ const PredictorSection = () => {
           boxShadow:"0 1px 2px rgba(0,0,0,0.05)"
         }}
       >
-        {loading ? "Clasificando…" : "Predecir Tier →"}
+        {loading ? "Clasificando…" : "Predecir Prioridad →"}
       </button>
 
       {result && (
@@ -663,13 +664,13 @@ const LimitacionesSection = () => {
       icon: <Coins size={22} />,
       title: "Sin Recaudo Real",
       color: "#4f46e5",
-      text: "No incluye facturas pagadas. Los tiers miden dificultad de trámite, no probabilidad de cobro.",
+      text: "No incluye facturas pagadas. Las prioridades miden dificultad de trámite, no probabilidad de cobro.",
     },
     {
       icon: <User size={22} />,
       title: "Sin Ground Truth",
       color: "#0284c7",
-      text: "Clustering no supervisado. Los tiers deben validarse con el experto del área de cartera.",
+      text: "Clustering no supervisado. Las prioridades deben validarse con el experto del área de cartera.",
     },
     {
       icon: <Hospital size={22} />,
@@ -759,7 +760,7 @@ export default function App() {
               margin:"8px 0 0", fontSize:13, color:"#334155",
               lineHeight:1.6, maxWidth:640,
             }}>
-              Clasificación automática de 69,570 facturas en Tiers de atención (Bajo / Medio / Alto)
+              Clasificación automática de 69,570 facturas en Prioridades de atención (Bajo / Medio / Alto)
               mediante KMeans para priorizar la gestión de cobro a EPS.
             </p>
           </div>
@@ -831,7 +832,7 @@ export default function App() {
             fontSize:10, color:"#64748b", fontFamily:"'DM Mono', monospace",
             letterSpacing:"0.2em", textTransform:"uppercase", marginBottom:16, fontWeight: 600
           }}>
-            05 — Perfil de Tiers (Centroides)
+            05 — Perfil de Prioridades (Centroides)
           </div>
           <CentroidesSection />
         </section>
